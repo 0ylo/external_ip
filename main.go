@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net"
 	"net/http"
 )
 
@@ -10,6 +11,10 @@ func main() {
 }
 
 func ip(w http.ResponseWriter, req *http.Request) {
-	w.Write([]byte(req.RemoteAddr))
+	host, _, err := net.SplitHostPort(req.RemoteAddr)
+	if err != nil {
+		return
+	}
+	w.Write([]byte(host))
 	return
 }
